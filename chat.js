@@ -1,18 +1,44 @@
-import { chatSession } from './inicializaChat.js'
+import { chatSession, funcoes } from './inicializaChat.js'
 
 export const executaChat = async (mensagem) => {
-  console.log('Tamanho do histórico: ' + await chatSession.getHistory().length)
   const resultado = await chatSession.sendMessage({
-    message: {
-      text: mensagem
-    }
+    message: { text: mensagem}
   })
 
   if (resultado.candidates && resultado.candidates.length > 0) {
-    const candidates = resultado.candidates[0]
-    if (candidates.content && candidates.content.parts.length > 0) {
-      const texto = candidates.content.parts[0].text
-      return texto
+    const content = resultado.candidates[0].content
+    const textPart = content.parts.map(({ text }) => text).join("")
+
+    const fc = content.parts[0].functionCall
+    
+    if (fc) {
+      const { name, args } = fc
+      const fn = funcoes[name]
+
+      if (!fn) {
+        throw new Error(`Unknown function "${name}"`);
+      }
+
+      const requestFc = [{
+        functionResponse: {
+          name,
+          response: {
+            name,
+            content: funcoes[name](args),
+          }
+        },
+      }]
+      
+      const resultadoFc = await chatSession.sendMessage({
+        message: requestFc
+      })
+      
+      const contentFc = resultadoFc.candidates[0].content
+      const textPartFc = contentFc.parts.map(({ text }) => text).join("")
+
+      return textPartFc
+    } else {
+      return textPart
     }
   }
 }
