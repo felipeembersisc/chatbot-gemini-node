@@ -4,7 +4,6 @@ Chatbot do Jornada Viagens, um app de simulação de um site de venda de pacotes
 
 ## 🔨 Objetivos do projeto
 
-
 - Desenvolver um Chatbot com JavaScript e Node.js integrado com o Google Gemini;
 - Gerenciar o histórico de troca de mensagens;
 - Criar funções dinâmicas com o recurso de Function Calling da API;
