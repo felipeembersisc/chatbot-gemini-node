@@ -1,11 +1,8 @@
 import { chatSession, funcoes } from "./inicializaChat.js";
-import { incorporarDocumentos, incorporarPergunta } from "./embedding.js";
+import { incorporarDocumentos, incorporarPergunta, leArquivos } from "./embedding.js";
 
-const documentos = await incorporarDocumentos([
-   "A política de cancelamento é de 30 dias antes da viagem, caso contrário, não haverá reembolso",
-   "Viagem para a Disney de 5 dias é R$ 10.000,00",
-   "Viagem para a Disney de 10 dias é R$ 20.000,00",
-]);
+const arquivos = await leArquivos(['./Pacotes_Argentina.txt','./Pacotes_EUA.txt','./Politicas.txt']);
+const documentos = await incorporarDocumentos(arquivos);
 
 export const executaChat = async (mensagem) => {
    let doc = await incorporarPergunta(mensagem, documentos);

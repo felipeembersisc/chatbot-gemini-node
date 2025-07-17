@@ -27,19 +27,19 @@ export const incorporarDocumentos = async (docTexts) => {
    return embeddings.map((e, i) => ({ text: docTexts[i], values: e.values }))
 };
 
-// export async function leArquivos(arquivos) {
-//    try {
-//       const documentos = [];
-//       for (const filePath of arquivos) {
-//          const documento = await fs.readFile(filePath, 'utf-8');
-//          documentos.push(documento);
-//       }
-//       return documentos;
-//    } catch (error) {
-//       console.error('Erro ao ler os documentos', error);
-//       return [];
-//    }
-// }
+export const leArquivos = async (arquivos) => {
+   try {
+      const documentos = [];
+      for (const filePath of arquivos) {
+         const documento = await fs.readFile(filePath, 'utf-8');
+         documentos.push(documento);
+      }
+      return documentos;
+   } catch (error) {
+      console.error('Erro ao ler os documentos', error);
+      return [];
+   }
+}
 
 const euclideanDistance = (a, b) => {   
    let sum = 0;
