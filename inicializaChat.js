@@ -18,7 +18,7 @@ const funcoes = {
       }
 
       return { taxaJuros: taxaDeJuros };
-   },
+   }
 };
 
 // Declaração da função para a API do Gemini
@@ -44,7 +44,7 @@ const inicializaChat = () => {
    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY_GEMINI });
 
    chatSession = ai.chats.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-pro",
       history: [
          {
             role: "user",
@@ -67,7 +67,9 @@ const inicializaChat = () => {
          maxOutputTokens: 1000,
          tools: [
             {
-               functionDeclarations: [taxasJurosFunctionDeclaration],
+               functionDeclarations: [
+                  taxasJurosFunctionDeclaration
+               ],
             },
          ],
       },

@@ -1,8 +1,9 @@
-import { chatSession, funcoes } from "./inicializaChat.js";
-import { incorporarDocumentos, incorporarPergunta, leArquivosPDF, leArquivosTxt } from "./embedding.js";
+import { chatSession, funcoes } from './inicializaChat.js';
+import { incorporarDocumentos, incorporarPergunta, lerArquivos} from './embedding.js';
 
-const arquivos = await leArquivosPDF(['./Políticas_do_Jornada_Viagens.pdf']);
+const arquivos = await lerArquivos(['./Pacotes_EUA.docx', './Pacotes_Argentina.txt']);
 const documentos = await incorporarDocumentos(arquivos);
+// console.log(documentos)
 
 export const executaChat = async (mensagem) => {
    let doc = await incorporarPergunta(mensagem, documentos);
@@ -14,7 +15,7 @@ export const executaChat = async (mensagem) => {
 
    if (resultado.candidates && resultado.candidates.length > 0) {
       const content = resultado.candidates[0].content;
-      const textPart = content.parts.map(({ text }) => text).join("");
+      const textPart = content.parts.map(({ text }) => text).join('');
 
       const fc = content.parts[0].functionCall;
 
@@ -23,7 +24,7 @@ export const executaChat = async (mensagem) => {
          const fn = funcoes[name];
 
          if (!fn) {
-            throw new Error(`Unknown function "${name}"`);
+            throw new Error(`Unknown function '${name}'`);
          }
 
          const requestFc = [
@@ -43,7 +44,7 @@ export const executaChat = async (mensagem) => {
          });
 
          const contentFc = resultadoFc.candidates[0].content;
-         const textPartFc = contentFc.parts.map(({ text }) => text).join("");
+         const textPartFc = contentFc.parts.map(({ text }) => text).join('');
 
          return textPartFc;
       } else {
